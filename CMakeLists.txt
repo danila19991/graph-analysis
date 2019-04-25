@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(AlgorithmFiles algo/input.cpp algo/algorithms.hpp algo/direction.cpp)
+set(AlgorithmFiles algo/input.cpp algo/algorithms.hpp algo/direction.cpp algo/connectivity.cpp)
 
 if(UNIX)
     set(FooTestArgs )
@@ -18,11 +18,11 @@ if(UNIX)
 
     add_executable(${PROJECT_NAME}_test
         test/test_direction.cpp
-        ${AlgorithmFiles})
+        ${AlgorithmFiles} test/test_connectivity.cpp)
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)
     target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
 endif()
 
 
-add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles})
+add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} algo/connectivity.cpp test/test_connectivity.cpp)

@@ -17,12 +17,13 @@ if(UNIX)
     include_directories(googletest/googletest googletest/googletest/include)
 
     add_executable(${PROJECT_NAME}_test
-        test/test_direction.cpp
-        ${AlgorithmFiles} test/test_connectivity.cpp)
+            test/test_direction.cpp
+            test/test_connectivity.cpp
+        ${AlgorithmFiles} )
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)
     target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
 endif()
 
 
-add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} algo/connectivity.cpp test/test_connectivity.cpp)
+add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} )

@@ -2,9 +2,11 @@
 // Created by danila on 25.04.19.
 //
 
+#include "../algo/algorithms.hpp"
+
 #include <gtest/gtest.h>
 
-#include "../algo/algorithms.hpp"
+#include <string>
 
 TEST(get_cc, without_edges){
     std::vector<std::vector<int>> g{
@@ -21,7 +23,6 @@ TEST(get_cc, without_edges){
     for(auto& t: was){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
-    ASSERT_TRUE(is_indirected(g)) << "empty graph is indirect";
 }
 
 TEST(get_cc, components_2){
@@ -41,7 +42,6 @@ TEST(get_cc, components_2){
     for(auto& t: was){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
-    ASSERT_TRUE(is_indirected(g)) << "empty graph is indirect";
 }
 
 TEST(get_scc, without_edges){
@@ -59,7 +59,6 @@ TEST(get_scc, without_edges){
     for(auto& t: was){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
-    ASSERT_TRUE(is_indirected(g)) << "empty graph is indirect";
 }
 
 TEST(get_scc, components_2){
@@ -68,18 +67,19 @@ TEST(get_scc, components_2){
             {0},
             {}
     };
-    auto res = get_cc(g);
+    auto res = get_scc(g);
     std::vector<int> was(3, 0);
     for(auto& t :res){
         for(auto& u:t){
             was[u] += 1;
         }
     }
-    ASSERT_EQ(res[1], std::vector<int>{2}) << "in 2 component only 2 vertex";
+    ASSERT_EQ(res.size(), 2) << "need 2 component";
+    ASSERT_EQ(res[1].size(), 1) << "in 2 component only 1 vertex";
+    ASSERT_EQ(res[1][0], 2) << "in 2 component vertex number 2";
     for(auto& t: was){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
-    ASSERT_TRUE(is_indirected(g)) << "empty graph is indirect";
 }
 
 TEST(get_scc, components_2_cycles){
@@ -90,18 +90,24 @@ TEST(get_scc, components_2_cycles){
             {4},
             {2}
     };
-    auto res = get_cc(g);
+    auto res = get_scc(g);
     std::vector<int> was(3, 0);
     for(auto& t :res){
         for(auto& u:t){
             was[u] += 1;
         }
     }
-    const bool is_second_correct = (res[1] ==  std::vector<int>{2, 3}) ||
-            (res[1] ==  std::vector<int>{3, 2});
-    ASSERT_TRUE(is_second_correct) << "in 2 component 2 ans 3 vertex";
+    if((res[1] !=  std::vector<int>{0, 1})&&(res[1] != std::vector<int>{1, 0})){
+        std::stringstream ss;
+        for (auto& it:res[1]) {
+            ss << it << " ";
+        }
+
+        ss << "not 0 and 1 vertex";
+
+        FAIL() << ss.str();
+    }
     for(auto& t: was){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
-    ASSERT_TRUE(is_indirected(g)) << "empty graph is indirect";
 }

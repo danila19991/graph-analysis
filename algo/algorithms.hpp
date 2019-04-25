@@ -27,8 +27,7 @@ bool is_indirected(const std::vector<std::vector<int>>& g);
  * @param[in] g Graph for changing.
  * @return Indirect graph.
  */
-std::vector<std::vector<int>> make_indirected(const
-                                              std::vector<std::vector<int>>& g);
+std::vector<std::vector<int>> make_indirected(std::vector<std::vector<int>> g);
 
 /**
  * Function for getting list of strong connectivity components.

@@ -8,11 +8,11 @@
 #include <iostream>
 #include <utility>
 
-int graph::get_id(int name) {
-    return from_name_to_id[name];
+int graph::get_id(int name) const {
+    return from_name_to_id.at(name);
 }
 
-int graph::get_name(int id) {
+int graph::get_name(int id) const {
     return from_id_to_name[id];
 }
 
@@ -71,6 +71,52 @@ graph graph::input_graph(const std::string &file_name) {
     }
 
     return graph(res, names, ids);
+}
+
+bool graph::is_indirected() const {
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j =0; j<edges[i].size();++j){
+            if(edges[i][j] >= edges.size())
+                return false;
+            bool was = false;
+            for(int k=0;k<edges[edges[i][j]].size();++k){
+                if(edges[edges[i][j]][k] == i){
+                    was = true;
+                    break;
+                }
+            }
+            if(!was){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+graph graph::make_indirected() const {
+    graph res(*this);
+    for(size_t i=0;i<res.edges.size();++i){
+        for(size_t j =0; j<res.edges[i].size();++j){
+            if(res.edges[i][j] >= res.edges.size())
+                throw std::exception();
+            bool was = false;
+            for(int k=0;k<res.edges[res.edges[i][j]].size();++k){
+                if(res.edges[res.edges[i][j]][k] == i){
+                    was = true;
+                    break;
+                }
+            }
+            if(!was){
+                res.edges[res.edges[i][j]].emplace_back(i);
+            }
+        }
+    }
+    return res;
+}
+
+bool operator==(const graph &l, const graph &r) {
+    return (l.edges==r.edges) && (l.from_name_to_id==r.from_name_to_id) &&
+            (l.from_id_to_name == r.from_id_to_name);
 }
 
 

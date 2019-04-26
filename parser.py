@@ -39,9 +39,6 @@ if __name__ == '__main__':
                 t = node.attrib['target']
                 g[d[f]].append(d[t])
 
-    with open('data/vertex_name.json','w') as f_out:
-        f_out.write(json.dumps(d))
-    print(json.dumps(d))
     with open('data/edges.txt', 'w') as f_out:
         f_out.write(str(len(g))+'\n')
         for k, v in g.items():

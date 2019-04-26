@@ -9,20 +9,6 @@
 #include <string>
 
 /**
- * Function for checking if current graph is indirected.
- * @param[in] g Graph for checking.
- * @return True if every edge have reverted.
- */
-bool is_indirected(const std::vector<std::vector<int>>& g);
-
-/**
- * Function for making current graph indirected.
- * @param[in] g Graph for changing.
- * @return Indirect graph.
- */
-std::vector<std::vector<int>> make_indirected(std::vector<std::vector<int>> g);
-
-/**
  * Function for getting list of strong connectivity components.
  * @param[in] g Graph for analysing.
  * @return List of string connectivity components, sorted by size.

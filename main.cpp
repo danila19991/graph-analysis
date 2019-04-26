@@ -29,7 +29,7 @@ void output_graph(const std::string& file_name,
 }
 
 void first_task(const graph& g){
-    if(is_indirected(g.edges))
+    if(g.is_indirected())
         std::cout<<"graph is indireted\n";
     else
         std::cout<<"graph is directe\n";
@@ -38,7 +38,7 @@ void first_task(const graph& g){
 
     output_graph("../data/scc.txt", scc, g);
 
-    auto cc = get_scc(make_indirected(g.edges));
+    auto cc = get_scc(g.make_indirected().edges);
 
     output_graph("../data/cc.txt", cc, g);
 }

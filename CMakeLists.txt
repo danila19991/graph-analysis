@@ -22,7 +22,6 @@ if(UNIX)
     include_directories(googletest/googletest googletest/googletest/include)
 
     add_executable(${PROJECT_NAME}_test
-            test/test_direction.cpp
             test/test_connectivity.cpp
             test/test_graph.cpp
             ${AlgorithmFiles} )

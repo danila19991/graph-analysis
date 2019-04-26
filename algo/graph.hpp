@@ -27,11 +27,17 @@ public:
           std::vector<int>  _from_id_to_name,
           std::unordered_map<int, int>  _from_name_to_id);
 
-    int get_id(int name);
+    int get_id(int name) const;
 
-    int get_name(int id);
+    int get_name(int id) const;
+
+    bool is_indirected() const;
+
+    graph make_indirected() const;
 
     static graph input_graph(const std::string& name);
+
+    friend bool operator == (const graph&l, const graph& r);
 };
 
 

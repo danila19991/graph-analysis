@@ -25,4 +25,18 @@ std::vector<std::vector<int>> get_scc(const graph& g);
  */
 std::vector<std::vector<int>> get_cc(const graph& g);
 
+typedef std::vector<std::vector<int>>  dist_mat;
+
+dist_mat get_all_distance(const graph& g);
+
+int get_radius(const dist_mat& d);
+
+int get_diametr(const dist_mat& d);
+
+std::vector<int> get_center(const dist_mat& d);
+
+std::vector<int> get_periphery(const dist_mat& d);
+
+double get_average_distance(const dist_mat& d);
+
 #endif //GRAPH_ALGORITHMS_HPP

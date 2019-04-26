@@ -11,7 +11,8 @@ set(AlgorithmFiles
         algo/algorithms.hpp
         algo/connectivity.cpp
         algo/graph.cpp
-        algo/graph.hpp)
+        algo/graph.hpp
+        algo/distance.cpp)
 
 if(UNIX)
     set(FooTestArgs )
@@ -24,6 +25,7 @@ if(UNIX)
             test/test_connectivity.cpp
             test/test_graph.cpp
             test/test_utils.h
+            test/test_distance.cpp
             ${AlgorithmFiles} )
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)

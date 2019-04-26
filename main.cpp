@@ -43,11 +43,43 @@ void first_task(const graph& g){
     output_graph("../data/cc.txt", cc, g);
 }
 
+void second_task(const graph& g, const std::string& file_name){
+    std::ofstream out(file_name);
+
+    if(!out.is_open()){
+        std::cout<<"can't open file\n";
+        return;
+    }
+
+    auto d = get_all_distance(g);
+
+    out<<"raius: "<<get_radius(d)<<'\n';
+    out<<"diametr: "<<get_diametr(d)<<'\n';
+
+    auto q = get_center(d);
+    out<<"center: ["<<g.get_name(q[0]);
+    for(size_t i=1; i<q.size();++i){
+        out<<", "<<g.get_name(q[i]);
+    }
+    out<<"]\n";
+    auto w = get_periphery(d);
+    out<<"periphery: ["<<g.get_name(w[0]);
+    for(size_t i=1; i<w.size();++i){
+        out<<", "<<g.get_name(w[i]);
+    }
+    out<<"]\n";
+    out<<"average: "<<get_average_distance(d)<<'\n';
+
+}
+
 int main(int argc, char* argv[]){
-    auto g = graph::input_graph("../data/edges.txt");
+    auto g = graph::input_graph("../data/edges2.txt");
 
     //first_task(g);
 
+    g = g.make_indirected();
+
+    second_task(g, "../data/res2.txt");
 
     std::cout<<"hello world\n"<<g.edges.size();
 }

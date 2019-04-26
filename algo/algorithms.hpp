@@ -9,13 +9,6 @@
 #include <string>
 
 /**
- * Reader graph from file.
- * @param[in] file_name Path to file for parsing
- * @return  Graph by the adjacency list.
- */
-std::vector<std::vector<int>> input_graph(const std::string& file_name);
-
-/**
  * Function for checking if current graph is indirected.
  * @param[in] g Graph for checking.
  * @return True if every edge have reverted.

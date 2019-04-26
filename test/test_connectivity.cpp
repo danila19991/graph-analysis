@@ -111,3 +111,47 @@ TEST(get_scc, components_2_cycles){
         ASSERT_EQ(1,t)<<"every vertex should be in list only once";
     }
 }
+
+TEST(get_scc, components_2_cycle_and_vertex){
+    std::vector<std::vector<int>> g{
+            {1, 2, 3},
+            {2},
+            {3},
+            {1}
+    };
+    auto res = get_scc(g);
+    std::vector<int> was(3, 0);
+    for(auto& t :res){
+        for(auto& u:t){
+            was[u] += 1;
+        }
+    }
+    ASSERT_EQ(res.size(), 2) << "need 2 component";
+    ASSERT_EQ(res[1].size(), 1) << "in 2 component only 1 vertex";
+    ASSERT_EQ(res[1][0], 0) << "in 2 component vertex number 0";
+    for(auto& t: was){
+        ASSERT_EQ(1,t)<<"every vertex should be in list only once";
+    }
+}
+
+TEST(get_scc, components_2_vertex_and_cycle){
+    std::vector<std::vector<int>> g{
+            {1, 3},
+            {2, 3},
+            {0, 3},
+            {}
+    };
+    auto res = get_scc(g);
+    std::vector<int> was(3, 0);
+    for(auto& t :res){
+        for(auto& u:t){
+            was[u] += 1;
+        }
+    }
+    ASSERT_EQ(res.size(), 2) << "need 2 component";
+    ASSERT_EQ(res[1].size(), 1) << "in 2 component only 1 vertex";
+    ASSERT_EQ(res[1][0], 3) << "in 2 component vertex number 0";
+    for(auto& t: was){
+        ASSERT_EQ(1,t)<<"every vertex should be in list only once";
+    }
+}

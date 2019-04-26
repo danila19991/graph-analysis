@@ -6,22 +6,10 @@
 
 #include <algorithm>
 
-std::vector<std::vector<int>> revert(const std::vector<std::vector<int>>& g){
-    std::vector<std::vector<int>> res(g.size(), std::vector<int>());
-
-    for(size_t i=0;i<g.size();++i){
-        for(size_t j=0;j<g[i].size();++j){
-            res[g[i][j]].emplace_back(i);
-        }
-    }
-
-    return res;
-}
-
-void dfs_scc(const std::vector<std::vector<int>>& g, std::vector<int>& was,
+void dfs_scc(const graph& g, std::vector<int>& was,
             int v, std::vector<int>& res, int c){
     was[v] = c;
-    for(auto&t:g[v]){
+    for(auto&t:g.edges[v]){
         if(was[t] != c){
             dfs_scc(g, was, t, res, c);
         }
@@ -34,13 +22,13 @@ bool cmp(const std::vector<int> &l, const std::vector<int> &r){
 }
 
 
-std::vector<std::vector<int>> get_scc(const std::vector<std::vector<int>>& g){
-    auto gr = revert(g);
+std::vector<std::vector<int>> get_scc(const graph& g){
+    auto gr = g.revert();
 
     std::vector<int> top_sort;
-    std::vector<int> was(g.size(), 0);
+    std::vector<int> was(g.edges.size(), 0);
 
-    for(size_t i=0;i<g.size();++i) {
+    for(size_t i=0;i<g.edges.size();++i) {
         if (was[i] == 0) {
             dfs_scc(gr, was, i, top_sort, 1);
         }
@@ -61,29 +49,30 @@ std::vector<std::vector<int>> get_scc(const std::vector<std::vector<int>>& g){
     return res;
 }
 
-void dfs_cc(const std::vector<std::vector<int>>& g, std::vector<int>& was,
+void dfs_cc(const graph& g, std::vector<int>& was,
         int v, int c){
     was[v] = c;
-    for(auto&t:g[v]){
+    for(auto&t:g.edges[v]){
         if(was[t] == 0){
             dfs_cc(g, was, t, c);
         }
     }
 }
 
-std::vector<std::vector<int>> get_cc(const std::vector<std::vector<int>>& g){
+std::vector<std::vector<int>> get_cc(const graph& g){
+    graph indirect = g.make_indirected();
     int c = 1;
-    std::vector<int> col(g.size(),0);
-    for(size_t i=0;i<g.size();++i){
+    std::vector<int> col(indirect.edges.size(),0);
+    for(size_t i=0;i<indirect.edges.size();++i){
         if(col[i] == 0){
-            dfs_cc(g,col,i,c);
+            dfs_cc(indirect,col,i,c);
             ++c;
         }
     }
 
     std::vector<std::vector<int>> res(c-1, std::vector<int>());
 
-    for(size_t i=0;i<g.size(); ++i){
+    for(size_t i=0;i<indirect.edges.size(); ++i){
         res[col[i]-1].emplace_back(i);
     }
 

@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 
 #include "../algo/graph.hpp"
+#include "test_utils.h"
 
 TEST(test_is_indirect, empty_graph)
 {
@@ -102,4 +103,50 @@ TEST(test_make_indirect, direct_graph)
     graph g(e,t);
     auto actual = g.make_indirected();
     ASSERT_TRUE(actual.is_indirected()) << "direct k3";
+}
+
+TEST(test_revert, emty_graph)
+{
+    std::vector<std::vector<int>> e{};
+    std::vector<int> t{};
+    graph g(e,t);
+    auto actual = g.revert();
+    ASSERT_EQ(actual, g) << "empty reverted graph is empty";
+}
+
+TEST(test_revert, direct_graph)
+{
+    std::vector<std::vector<int>> e{
+            {1},
+            {2},
+            {0}
+    };
+    std::vector<std::vector<int>> e2{
+            {2},
+            {0},
+            {1}
+    };
+    std::stringstream ss;
+    std::vector<int> t{0,1,2};
+    graph g(e,t);
+    auto actual = g.revert();
+    graph expected(e2, t);
+    ss << actual.edges << " ";
+    ss << expected.edges << "incorrect reverted graph for direct one";
+    ASSERT_EQ(actual, expected) << ss.str();
+}
+
+TEST(test_revert, indirect_graph)
+{
+    std::vector<std::vector<int>> e{
+            {1},
+            {0}
+    };
+    std::stringstream ss;
+    std::vector<int> t{0,1};
+    graph g(e,t);
+    auto actual = g.revert();
+    ss << actual.edges << " ";
+    ss << g.edges << "incorrect reverted graph for direct one";
+    ASSERT_EQ(actual, g) << "reverted direct k3 is k3";
 }

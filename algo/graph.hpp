@@ -2,7 +2,7 @@
 // Created by danila on 26.04.19.
 //
 
-#ifndef GRAPH_GRAPH_H
+#ifndef GRAPH_GRAPH_HPP
 #define GRAPH_GRAPH_HPP
 
 #include <vector>
@@ -35,10 +35,12 @@ public:
 
     graph make_indirected() const;
 
+    graph revert() const;
+
     static graph input_graph(const std::string& name);
 
     friend bool operator == (const graph&l, const graph& r);
 };
 
 
-#endif //GRAPH_GRAPH_H
+#endif //GRAPH_GRAPH_HPP

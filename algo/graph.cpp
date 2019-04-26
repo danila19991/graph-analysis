@@ -119,4 +119,16 @@ bool operator==(const graph &l, const graph &r) {
             (l.from_id_to_name == r.from_id_to_name);
 }
 
+graph graph::revert() const {
+    std::vector<std::vector<int>> res(edges.size(), std::vector<int>());
+
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j=0;j<edges[i].size();++j){
+            res[edges[i][j]].emplace_back(i);
+        }
+    }
+
+    return graph(res, from_id_to_name, from_name_to_id);
+}
+
 

@@ -9,7 +9,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(AlgorithmFiles
         algo/algorithms.hpp
-        algo/direction.cpp
         algo/connectivity.cpp
         algo/graph.cpp
         algo/graph.hpp)
@@ -24,6 +23,7 @@ if(UNIX)
     add_executable(${PROJECT_NAME}_test
             test/test_connectivity.cpp
             test/test_graph.cpp
+            test/test_utils.h
             ${AlgorithmFiles} )
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)

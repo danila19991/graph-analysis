@@ -34,11 +34,11 @@ void first_task(const graph& g){
     else
         std::cout<<"graph is directe\n";
 
-    auto scc = get_scc(g.edges);
+    auto scc = get_scc(g);
 
     output_graph("../data/scc.txt", scc, g);
 
-    auto cc = get_scc(g.make_indirected().edges);
+    auto cc = get_cc(g);
 
     output_graph("../data/cc.txt", cc, g);
 }
@@ -46,7 +46,7 @@ void first_task(const graph& g){
 int main(int argc, char* argv[]){
     auto g = graph::input_graph("../data/edges.txt");
 
-    first_task(g);
+    //first_task(g);
 
 
     std::cout<<"hello world\n"<<g.edges.size();

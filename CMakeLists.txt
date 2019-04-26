@@ -3,19 +3,27 @@ project(graph)
 
 enable_testing()
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-include(GoogleTest)
+set(AlgorithmFiles algo/input.cpp algo/algorithms.hpp algo/direction.cpp algo/connectivity.cpp)
 
-add_subdirectory(googletest)
+if(UNIX)
+    set(FooTestArgs )
 
-set(FooTestArgs )
+    include(GoogleTest)
+    add_subdirectory(googletest)
+    include_directories(googletest/googletest googletest/googletest/include)
 
-include_directories(googletest/googletest googletest/googletest/include)
+    add_executable(${PROJECT_NAME}_test
+            test/test_direction.cpp
+            test/test_connectivity.cpp
+        ${AlgorithmFiles} )
 
-add_executable(${PROJECT_NAME} main.cpp algo/example.cpp test/example.cpp )
+    gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)
+    target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
+endif()
 
-target_link_libraries(${PROJECT_NAME} gtest gtest_main)
-gtest_add_tests(${PROJECT_NAME} "${FooTestArgs}" AUTO)
+
+add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} )

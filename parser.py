@@ -32,7 +32,7 @@ if __name__ == '__main__':
                 t = node.attrib['id']
                 d[t] = len(d)
                 g[d[t]] = []
-        if 'edges' in elem.tag:
+        if 'edges.txt' in elem.tag:
             for node in elem:
                 f = node.attrib['source']
                 t = node.attrib['target']
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     with open('data/vertex_name.json','w') as f_out:
         f_out.write(json.dumps(d))
     print(json.dumps(d))
-    with open('data/edges', 'w') as f_out:
+    with open('data/edges.txt', 'w') as f_out:
         f_out.write(str(len(g))+'\n')
         for k, v in g.items():
             f_out.write(str(len(v)) + ' ' + ''.join([str(q)+' ' for q in v])+'\n')

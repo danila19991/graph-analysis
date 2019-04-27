@@ -54,7 +54,7 @@ TEST(test_adamic_adar_metric, tree)
     std::vector<int> t{0,1,2};
     graph g(e,t);
     auto res = adamic_adar_metric(g);
-    ASSERT_EQ(res, mat({{0, 0, log(2.)},{0, 0, 0},{log(2.), 0, 0}})) << "empty graph is indirect";
+    ASSERT_EQ(res, mat({{0, 0, 1./log(2.)},{0, 0, 0},{1./log(2.), 0, 0}})) << "empty graph is indirect";
 }
 
 TEST(test_preferential_attachment, tree)

@@ -4,6 +4,7 @@
 
 #include "graph.hpp"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <utility>
@@ -22,7 +23,7 @@ graph::graph(std::vector<std::vector<int>> _edges,
     edges(std::move(_edges)),
     from_name_to_id(std::move(_from_name_to_id)),
     from_id_to_name(std::move(_from_id_to_name)){
-
+    normalise();
 }
 
 graph::graph(std::vector<std::vector<int>> _edges,
@@ -32,6 +33,8 @@ graph::graph(std::vector<std::vector<int>> _edges,
     for(size_t i=0;i<from_id_to_name.size();++i){
         from_name_to_id[from_id_to_name[i]] = i;
     }
+
+    normalise();
 }
 
 graph graph::input_graph(const std::string &file_name) {
@@ -111,6 +114,7 @@ graph graph::make_indirected() const {
             }
         }
     }
+    res.normalise();
     return res;
 }
 
@@ -129,6 +133,12 @@ graph graph::revert() const {
     }
 
     return graph(res, from_id_to_name, from_name_to_id);
+}
+
+void graph::normalise() {
+    for(auto& it:edges){
+        std::sort(it.begin(), it.end());
+    }
 }
 
 

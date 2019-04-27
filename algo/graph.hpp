@@ -35,6 +35,8 @@ public:
 
     graph make_indirected() const;
 
+    void normalise();
+
     graph revert() const;
 
     static graph input_graph(const std::string& name);

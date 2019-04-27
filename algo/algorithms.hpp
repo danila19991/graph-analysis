@@ -26,6 +26,7 @@ std::vector<std::vector<int>> get_scc(const graph& g);
 std::vector<std::vector<int>> get_cc(const graph& g);
 
 typedef std::vector<std::vector<int>>  dist_mat;
+typedef std::vector<std::vector<double>>  mat;
 
 dist_mat get_all_distance(const graph& g);
 
@@ -38,5 +39,32 @@ std::vector<int> get_center(const dist_mat& d);
 std::vector<int> get_periphery(const dist_mat& d);
 
 double get_average_distance(const dist_mat& d);
+
+mat common_neighbors(const graph& g);
+
+mat jaccard_metric(const graph& g);
+
+mat adamic_adar_metric(const graph& g);
+
+mat preferential_attachment(const graph& g);
+
+/**
+ * Function for intersecting two sorted vectors of numbers.
+ * @warning Input parametrs must be sorted.
+ * @param[in] l First vector for intersecting.
+ * @param[in] r Second vector for intersecting.
+ * @return Sorted vector with elements which was in l and r.
+ */
+std::vector<int> intersection(const std::vector<int>& l,
+        const std::vector<int>& r);
+
+/**
+ * Function for merging two sorted vectors of numbers.
+ * @warning Input parametrs must be sorted.
+ * @param[in] l First vector for merging.
+ * @param[in] r Second vector for merging.
+ * @return Sorted vector with elements which was in l or r.
+ */
+std::vector<int> merge(const std::vector<int>& l, const std::vector<int>& r);
 
 #endif //GRAPH_ALGORITHMS_HPP

@@ -24,25 +24,24 @@ if __name__ == '__main__':
 
     d = {}
     g = {}
+    names = {}
 
     for elem in graph:
-        print(elem.tag)
         if 'nodes' in elem.tag:
             for node in elem:
                 t = node.attrib['id']
                 d[t] = len(d)
+                names[d[t]] = t
                 g[d[t]] = []
-        if 'edges.txt' in elem.tag:
+        if 'edges' in elem.tag:
             for node in elem:
                 f = node.attrib['source']
                 t = node.attrib['target']
                 g[d[f]].append(d[t])
 
-    with open('data/vertex_name.json','w') as f_out:
-        f_out.write(json.dumps(d))
-    print(json.dumps(d))
     with open('data/edges.txt', 'w') as f_out:
         f_out.write(str(len(g))+'\n')
         for k, v in g.items():
-            f_out.write(str(len(v)) + ' ' + ''.join([str(q)+' ' for q in v])+'\n')
+            f_out.write(str(names[k]) + ' ' + str(len(v)) + ' ' +
+                        ''.join([str(names[q])+' ' for q in v])+'\n')
             print(k, v)

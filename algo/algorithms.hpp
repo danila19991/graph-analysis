@@ -5,36 +5,17 @@
 #ifndef GRAPH_ALGORITHMS_HPP
 #define GRAPH_ALGORITHMS_HPP
 
+#include "graph.hpp"
+
 #include <vector>
 #include <string>
-
-/**
- * Reader graph from file.
- * @param[in] file_name Path to file for parsing
- * @return  Graph by the adjacency list.
- */
-std::vector<std::vector<int>> input_graph(const std::string& file_name);
-
-/**
- * Function for checking if current graph is indirected.
- * @param[in] g Graph for checking.
- * @return True if every edge have reverted.
- */
-bool is_indirected(const std::vector<std::vector<int>>& g);
-
-/**
- * Function for making current graph indirected.
- * @param[in] g Graph for changing.
- * @return Indirect graph.
- */
-std::vector<std::vector<int>> make_indirected(std::vector<std::vector<int>> g);
 
 /**
  * Function for getting list of strong connectivity components.
  * @param[in] g Graph for analysing.
  * @return List of string connectivity components, sorted by size.
  */
-std::vector<std::vector<int>> get_scc(const std::vector<std::vector<int>>& g);
+std::vector<std::vector<int>> get_scc(const graph& g);
 
 /**
  * Function for getting list of connectivity components.
@@ -42,6 +23,48 @@ std::vector<std::vector<int>> get_scc(const std::vector<std::vector<int>>& g);
  * @param[in] g Graph for changing.
  * @return List of connectivity components, sorted by size.
  */
-std::vector<std::vector<int>> get_cc(const std::vector<std::vector<int>>& g);
+std::vector<std::vector<int>> get_cc(const graph& g);
+
+typedef std::vector<std::vector<int>>  dist_mat;
+typedef std::vector<std::vector<double>>  mat;
+
+dist_mat get_all_distance(const graph& g);
+
+int get_radius(const dist_mat& d);
+
+int get_diametr(const dist_mat& d);
+
+std::vector<int> get_center(const dist_mat& d);
+
+std::vector<int> get_periphery(const dist_mat& d);
+
+double get_average_distance(const dist_mat& d);
+
+mat common_neighbors(const graph& g);
+
+mat jaccard_metric(const graph& g);
+
+mat adamic_adar_metric(const graph& g);
+
+mat preferential_attachment(const graph& g);
+
+/**
+ * Function for intersecting two sorted vectors of numbers.
+ * @warning Input parametrs must be sorted.
+ * @param[in] l First vector for intersecting.
+ * @param[in] r Second vector for intersecting.
+ * @return Sorted vector with elements which was in l and r.
+ */
+std::vector<int> intersection(const std::vector<int>& l,
+        const std::vector<int>& r);
+
+/**
+ * Function for merging two sorted vectors of numbers.
+ * @warning Input parametrs must be sorted.
+ * @param[in] l First vector for merging.
+ * @param[in] r Second vector for merging.
+ * @return Sorted vector with elements which was in l or r.
+ */
+std::vector<int> merge(const std::vector<int>& l, const std::vector<int>& r);
 
 #endif //GRAPH_ALGORITHMS_HPP

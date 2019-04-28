@@ -150,21 +150,46 @@ void show_test1(){
 
 void show_test2(){
     std::vector<std::vector<int>> e{
-            {1},
-            {0, 2, 3},
-            {1},
-            {1}
+            {1, 2, 3, 4},
+            {0},
+            {0},
+            {0},
+            {0}
     };
 
-    std::vector<int> n{0, 1, 2, 3};
+    std::vector<int> n{0, 1, 2, 3, 4};
 
     graph g(e,n);
 
     draw_graph dg;
 
     dg.g = g;
-    dg.x = {200, 500, 800, 500};
-    dg.y = {500, 500, 500, 800};
+    dg.x = {490, 500, 510, 500, 500};
+    dg.y = {500, 500, 500, 510, 490};
+
+    show_graph(dg);
+}
+
+void show_test3(){
+    std::vector<std::vector<int>> e{
+    };
+
+    std::vector<int> n;
+
+    for(size_t i=0;i<100;++i){
+        e.emplace_back(std::vector<int>());
+        n.emplace_back(i);
+    }
+
+    graph g(e,n);
+
+    draw_graph dg = generate_start_positions(g);
+
+    show_graph(dg);
+}
+
+void show(const graph &g){
+    draw_graph dg = generate_start_positions(g);
 
     show_graph(dg);
 }
@@ -178,6 +203,8 @@ int main(int argc, char* argv[]){
 
     //second_task(g, "../data/res2.txt");
     //third_task(g);
-    show_test1();
-    show_test2();
+    //show_test1();
+    //show_test2();
+    //show_test3();
+    show(g);
 }

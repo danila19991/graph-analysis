@@ -21,10 +21,14 @@ struct draw_graph{
     draw_graph():g({},{}){}
 };
 
+draw_graph generate_start_positions(const graph &g);
+
+void iterate_draw_graph(draw_graph& dg, double k=1e-2);
+
 void show_matrix(const std::vector<std::vector<double>>& mat,
         const std::string& name = "show matrix");
 
-void show_graph(const draw_graph& g,
+void show_graph(draw_graph& g,
                 const std::string& name = "show matrix");
 
 #endif //GRAPH_GRAFFIC_H

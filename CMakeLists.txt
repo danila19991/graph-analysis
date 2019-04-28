@@ -15,6 +15,8 @@ set(AlgorithmFiles
         algo/distance.cpp
         algo/similarity.cpp)
 
+set(GrafficFiles graffic/graffic.cpp graffic/graffic.h)
+
 if(UNIX)
     set(FooTestArgs )
 
@@ -34,5 +36,14 @@ if(UNIX)
     target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
 endif()
 
+add_subdirectory(glfw)
 
-add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles})
+set(OpenGL_GL_PREFERENCE GLVND)
+
+find_package(OpenGL REQUIRED)
+
+add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} ${GrafficFiles})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${glfw_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME} glfw ${OPENGL_LIBRARIES})

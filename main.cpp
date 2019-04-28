@@ -4,6 +4,7 @@
 
 #include "algo/algorithms.hpp"
 #include "algo/graph.hpp"
+#include "graffic/graffic.h"
 
 #include <iostream>
 #include <fstream>
@@ -100,23 +101,72 @@ void second_task(const graph& g, const std::string& file_name){
 
 }
 
-void third_task(const graph& g){
+void third_task(const graph& g, bool with_show = false){
 
     auto m1 = common_neighbors(g);
+
+    if(with_show) {
+        show_matrix(m1);
+    }
 
     write_csv("../data/common_neighbors.csv", m1, g);
 
     auto m2 = jaccard_metric(g);
 
+    if(with_show) {
+        show_matrix(m2);
+    }
+
     write_csv("../data/jaccard_metric.csv", m2, g);
 
     auto m3 = adamic_adar_metric(g);
+
+    if(with_show) {
+        show_matrix(m3);
+    }
 
     write_csv("../data/adamic_adar_metric.csv", m3, g);
 
     auto m4 = preferential_attachment(g);
 
+    if(with_show) {
+        show_matrix(m4);
+    }
+
     write_csv("../data/preferential_attachment.csv", m4, g);
+}
+
+void show_test1(){
+    std::vector<std::vector<double>> mat{
+            {0,   1,   0,   1, 0},
+            {1, 0.5,   1, 0.5, 1},
+            {0,   1, 0.5,   1, 0},
+            {1, 0.5,   1, 0.5, 1},
+            {0,   1,   0,   1, 0}
+    };
+
+    show_matrix(mat);
+}
+
+void show_test2(){
+    std::vector<std::vector<int>> e{
+            {1},
+            {0, 2, 3},
+            {1},
+            {1}
+    };
+
+    std::vector<int> n{0, 1, 2, 3};
+
+    graph g(e,n);
+
+    draw_graph dg;
+
+    dg.g = g;
+    dg.x = {200, 500, 800, 500};
+    dg.y = {500, 500, 500, 800};
+
+    show_graph(dg);
 }
 
 int main(int argc, char* argv[]){
@@ -127,7 +177,7 @@ int main(int argc, char* argv[]){
     g = g.make_indirected();
 
     //second_task(g, "../data/res2.txt");
-    third_task(g);
-
-    std::cout<<"hello world\n"<<g.edges.size();
+    //third_task(g);
+    show_test1();
+    show_test2();
 }

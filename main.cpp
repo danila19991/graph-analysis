@@ -183,13 +183,15 @@ void show_test3(){
 
     graph g(e,n);
 
-    draw_graph dg = generate_start_positions(g);
+    //draw_graph dg = generate_start_positions(g);
+    draw_graph dg = generate_circle_positions(g);
 
     show_graph(dg);
 }
 
 void show(const graph &g){
-    draw_graph dg = generate_start_positions(g);
+//    draw_graph dg = generate_start_positions(g);
+    draw_graph dg = generate_circle_positions(g);
 
     show_graph(dg);
 }

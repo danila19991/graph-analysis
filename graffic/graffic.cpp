@@ -127,13 +127,13 @@ void show_node(double x, double y, double r){
     glEnd();
 }
 
-void show_graph(draw_graph &g, const std::string& name) {
+void show_graph(draw_graph &g, const std::string& name, bool need_iteration) {
     if (!glfwInit())
     {
         std::cout<<"window creation error\n";
     }
 
-    GLFWwindow* window = glfwCreateWindow(640, 480, name.c_str(), NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1000, 1000, name.c_str(), NULL, NULL);
 
     glfwMakeContextCurrent(window);
 
@@ -145,10 +145,12 @@ void show_graph(draw_graph &g, const std::string& name) {
 
     while (!glfwWindowShouldClose(window))
     {
-        ++counter;
-        if(counter > 50){
-            iterate_draw_graph(g, 1e-2);
-            counter = 0;
+        if(need_iteration) {
+            ++counter;
+            if (counter > 50) {
+                iterate_draw_graph(g, 1e-2);
+                counter = 0;
+            }
         }
 
         int width, height;
@@ -160,10 +162,9 @@ void show_graph(draw_graph &g, const std::string& name) {
         glClearDepth(1.0);
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-        width = 100;
-        height = 100;
-
         glOrtho(0.0, g.maxx, 0.0, g.maxy, -1.0, 1.0);
+
+        glPushMatrix();
 
         glColor3f(0.5,0.5,0.5);
         for(size_t i=0;i<g.g.edges.size(); ++i){
@@ -189,6 +190,8 @@ void show_graph(draw_graph &g, const std::string& name) {
                 show_node(g.x[i], g.y[i], std::max(2., g.node_colors[i]*10));
             }
         }
+
+        glPopMatrix();
 
         glFlush();
 
@@ -224,6 +227,28 @@ draw_graph generate_start_positions(const graph &g) {
     for(int i=0;i<g.edges.size();++i){
         x[i] = p[i].first;
         y[i] = p[i].second;
+    }
+
+    res.maxy = 1000;
+    res.maxx = 1000;
+    res.x = x;
+    res.y = y;
+
+    return res;
+}
+
+draw_graph generate_circle_positions(const graph &g) {
+    draw_graph res;
+
+    std::vector<double> x(g.edges.size()), y(g.edges.size());
+
+    res.g = g;
+
+    const double pi = acos(-1);
+
+    for(int i=0;i<g.edges.size();++i){
+        x[i] = 500 + cos(i*2*pi/g.edges.size())*480;
+        y[i] = 500 + sin(i*2*pi/g.edges.size())*480;
     }
 
     res.maxy = 1000;
@@ -273,8 +298,8 @@ void iterate_draw_graph(draw_graph &dg, double k) {
                     continue;
                 }
 
-                dx[i] -= (dg.x[j] - dg.x[i])/v/std::log(v);
-                dy[i] -= (dg.y[j] - dg.y[i])/v/std::log(v);
+                dx[i] -= (dg.x[j] - dg.x[i])/v/std::sqrt(v);
+                dy[i] -= (dg.y[j] - dg.y[i])/v/std::sqrt(v);
             }
         }
     }

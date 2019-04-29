@@ -29,7 +29,9 @@ void output_graph(const std::string& file_name,
     }
 }
 
-void write_csv(const std::string& file_name, const mat& values, const graph& g){
+template <typename T>
+void write_csv(const std::string& file_name,
+        const std::vector<std::vector<T>>& values, const graph& g){
     std::ofstream out(file_name);
 
     if(!out.is_open()){
@@ -46,7 +48,7 @@ void write_csv(const std::string& file_name, const mat& values, const graph& g){
 
     for(size_t i=0;i<values.size(); ++i){
         out<<'\n';
-        for(size_t j=0;j<values[j].size();++j){
+        for(size_t j=0;j<values[i].size();++j){
             if(j!=0){
                 out<<',';
             }
@@ -54,7 +56,35 @@ void write_csv(const std::string& file_name, const mat& values, const graph& g){
         }
     }
 
-    out.flags();
+    out.flush();
+}
+
+void write_vec(const std::string& file_name, const std::vector<double>& values,
+        const graph& g){
+    std::ofstream out(file_name);
+
+    if(!out.is_open()){
+        std::cout<<"can't open file\n";
+        return;
+    }
+
+    for(size_t i=0;i<g.edges.size();++i){
+        if(i!=0){
+            out<<',';
+        }
+        out<<g.get_name(i);
+    }
+    out<<'\n';
+
+    for(size_t i=0;i<values.size(); ++i){
+        if(i!=0){
+            out<<',';
+        }
+        out<<values[i];
+    }
+
+    out.flush();
+
 }
 
 void first_task(const graph& g){
@@ -196,17 +226,83 @@ void show(const graph &g){
     show_graph(dg);
 }
 
+void fourth_task(const graph& g){
+    draw_graph dg = generate_circle_positions(g);
+
+    auto res1 = degree_centrality(g);
+
+    dg.node_colors = res1;
+
+    show_graph(dg, "degree centrality", false);
+    write_vec("../data/degree_centrality.csv", res1, g);
+//*/
+
+    auto res2 = closness_centrality(g);
+
+    dg.node_colors = res2;
+
+    show_graph(dg, "closeness centrality", false);
+    write_vec("../data/closeness_centrality.csv", res2, g);
+//*/
+
+    auto res3 = betweenness_centrality(g);
+
+    dg.node_colors = res3;
+
+    show_graph(dg, "betweenness centrality", false);
+    write_vec("../data/betweenness_centrality.csv", res3, g);
+//*/
+
+    auto res4 = eigenvector_centrality(g);
+
+    dg.node_colors = res4;
+
+    show_graph(dg, "eigenvector centrality", false);
+    write_vec("../data/eigenvector_centrality.csv", res4, g);
+//*/
+
+    auto res5 = edge_betweenness(g);
+    draw_graph dg2 = generate_circle_positions(g);
+
+    dg2.edge_colors = res5;
+
+    show_graph(dg2, "betweenness centrality", false);
+    write_csv("../data/edge_betweenness.csv", res5, g);
+//*/
+}
+
+void zero_task(const graph& g){
+    write_csv("../data/matrix.csv",g.get_edge_mat(), g);
+
+    std::ofstream out("../data/list.csv");
+
+    if(!out.is_open()){
+        std::cout<<"can't open file\n";
+        return;
+    }
+
+    auto values = g.get_edge_list();
+
+    for(size_t i=0;i<values.size(); ++i){
+        if(i!=0){
+            out << '\n';
+        }
+        out<<g.get_name(values[i].first)<<','<<g.get_name(values[i].second);
+    }
+
+    out.flush();
+}
+
 int main(int argc, char* argv[]){
     auto g = graph::input_graph("../data/edges2.txt");
 
+    //zero_task(g);
     //first_task(g);
 
     g = g.make_indirected();
 
-    //second_task(g, "../data/res2.txt");
-    //third_task(g);
-    //show_test1();
-    //show_test2();
-    //show_test3();
+    second_task(g, "../data/res2.txt");
+    third_task(g, true);
     show(g);
+    fourth_task(g);
 }

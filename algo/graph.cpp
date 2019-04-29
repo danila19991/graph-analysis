@@ -141,4 +141,29 @@ void graph::normalise() {
     }
 }
 
+std::vector<std::pair<int, int>> graph::get_edge_list() const {
+    std::vector<std::pair<int, int>> res;
+
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j=0;j<edges[i].size();++j){
+            res.emplace_back(std::make_pair(i,edges[i][j]));
+        }
+    }
+
+    return res;
+}
+
+std::vector<std::vector<int>> graph::get_edge_mat() const {
+    std::vector<std::vector<int>> res(edges.size(),
+            std::vector<int>(edges.size(), 0));
+
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j=0;j<edges[i].size();++j){
+            res[i][edges[i][j]] = 1;
+        }
+    }
+
+    return res;
+}
+
 

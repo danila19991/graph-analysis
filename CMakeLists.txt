@@ -13,7 +13,8 @@ set(AlgorithmFiles
         algo/graph.cpp
         algo/graph.hpp
         algo/distance.cpp
-        algo/similarity.cpp)
+        algo/similarity.cpp
+        algo/centrality.cpp)
 
 set(GrafficFiles graffic/graffic.cpp graffic/graffic.h)
 

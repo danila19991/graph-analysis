@@ -14,6 +14,25 @@
 
 constexpr double need_d = 20;
 
+std::vector<double> normalise(const std::vector<double>& vec){
+    double mx = vec[0];
+    for(auto& it:vec){
+        mx = std::max(mx, it);
+    }
+
+    std::vector<double> res(vec);
+
+    if(std::abs(mx) < 1e-4){
+        return res;
+    }
+
+    for(auto& it:res){
+        it /= mx;
+    }
+
+    return res;
+}
+
 std::vector<std::vector<double>>
 normalise(const std::vector<std::vector<double>> &mat){
     double mx = mat[0][0];
@@ -25,15 +44,17 @@ normalise(const std::vector<std::vector<double>> &mat){
 
     std::vector<std::vector<double>> res(mat);
 
-    if(mx > 1e-6){
-        for(auto& line: res){
-            for(auto& it: line){
-                it /= mx;
-            }
-        }
-        return res;
+    if(abs(mx) < 1e-6){
+        return mat;
     }
-    return mat;
+
+    for(auto& line: res){
+        for(auto& it: line){
+            it /= mx;
+        }
+    }
+
+    return res;
 }
 
 void show_matrix(const std::vector<std::vector<double>> &mat,
@@ -143,9 +164,19 @@ void show_graph(draw_graph &g, const std::string& name, bool need_iteration) {
 
     int counter = 0;
 
-    while (!glfwWindowShouldClose(window))
-    {
-        if(need_iteration) {
+    std::vector<double> nc(g.node_colors);
+    if(nc.size() == g.x.size()){
+        nc = normalise(nc);
+    }
+
+    auto ec(g.edge_colors);
+    if(ec.size() == g.x.size()){
+        ec = normalise(ec);
+    }
+
+
+    while (!glfwWindowShouldClose(window)) {
+        if (need_iteration) {
             ++counter;
             if (counter > 50) {
                 iterate_draw_graph(g, 1e-2);
@@ -160,25 +191,40 @@ void show_graph(draw_graph &g, const std::string& name, bool need_iteration) {
         glLoadIdentity();
 
         glClearDepth(1.0);
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glOrtho(0.0, g.maxx, 0.0, g.maxy, -1.0, 1.0);
 
         glPushMatrix();
 
-        glColor3f(0.5,0.5,0.5);
-        for(size_t i=0;i<g.g.edges.size(); ++i){
-            for(size_t j=0;j<g.g.edges[i].size(); ++j){
-                glBegin(GL_LINES);
+        if (ec.size() != g.x.size()) {
+            glColor3f(0.6, 0.6, 0.6);
+            for (size_t i = 0; i < g.g.edges.size(); ++i) {
+                for (size_t j = 0; j < g.g.edges[i].size(); ++j) {
+                    glBegin(GL_LINES);
 
-                glVertex2f(g.x[i], g.y[i]);
-                glVertex2f(g.x[g.g.edges[i][j]], g.y[g.g.edges[i][j]]);
+                    glVertex2f(g.x[i], g.y[i]);
+                    glVertex2f(g.x[g.g.edges[i][j]], g.y[g.g.edges[i][j]]);
 
-                glEnd();
+                    glEnd();
+                }
+            }
+        }
+        else{
+            for (size_t i = 0; i < g.g.edges.size(); ++i) {
+                for (size_t j = 0; j < g.g.edges[i].size(); ++j) {
+                    glColor3f(ec[g.g.edges[i][j]][i], 0, 1-ec[g.g.edges[i][j]][i]);
+                    glBegin(GL_LINES);
+
+                    glVertex2f(g.x[i], g.y[i]);
+                    glVertex2f(g.x[g.g.edges[i][j]], g.y[g.g.edges[i][j]]);
+
+                    glEnd();
+                }
             }
         }
 
-        if(g.node_colors.size() != g.x.size()) {
+        if(nc.size() != g.x.size()) {
             glColor3f(0,0,0);
             for (size_t i = 0; i < g.x.size(); ++i) {
                 show_node(g.x[i], g.y[i], 2);
@@ -186,8 +232,8 @@ void show_graph(draw_graph &g, const std::string& name, bool need_iteration) {
         }
         else{
             for (size_t i = 0; i < g.x.size(); ++i) {
-                glColor3f(g.node_colors[i],0,1-g.node_colors[i]);
-                show_node(g.x[i], g.y[i], std::max(2., g.node_colors[i]*10));
+                glColor3f(nc[i],0,1-nc[i]);
+                show_node(g.x[i], g.y[i], std::max(2., nc[i]*7));
             }
         }
 

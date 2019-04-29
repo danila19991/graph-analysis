@@ -37,6 +37,10 @@ public:
 
     void normalise();
 
+    std::vector<std::pair<int, int>> get_edge_list() const;
+
+    std::vector<std::vector<int>> get_edge_mat() const;
+
     graph revert() const;
 
     static graph input_graph(const std::string& name);

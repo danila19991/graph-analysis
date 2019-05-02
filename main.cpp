@@ -301,8 +301,10 @@ int main(int argc, char* argv[]){
 
     g = g.make_indirected();
 
-    second_task(g, "../data/res2.txt");
-    third_task(g, true);
-    show(g);
-    fourth_task(g);
+    write_csv("../data/connectivity_list.csv", g.edges, g);
+
+    //second_task(g, "../data/res2.txt");
+    //third_task(g, true);
+    //show(g);
+    //fourth_task(g);
 }

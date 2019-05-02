@@ -51,5 +51,5 @@ def get_params(file_name):
 
 
 if __name__ == '__main__':
-    #hist('../data/edges2.txt')
+    hist('../data/edges2.txt')
     get_params('../data/vk-friends.gexf')

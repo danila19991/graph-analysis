@@ -4,6 +4,7 @@ sudo: required
 compiler: gcc
 before_install:
   - git clone https://github.com/google/googletest.git
+  - git clone https://github.com/glfw/glfw.git
 script:
   - mkdir build
   - cd build

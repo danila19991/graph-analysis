@@ -5,7 +5,7 @@
 #include "algorithms.hpp"
 
 #include <queue>
-#include <math.h>
+#include <cmath>
 
 std::vector<double> degree_centrality(const graph& g){
     std::vector<double> res;

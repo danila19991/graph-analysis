@@ -19,7 +19,7 @@ set(AlgorithmFiles
 set(GrafficFiles graffic/graffic.cpp graffic/graffic.h)
 
 if(UNIX)
-    set(FooTestArgs )
+    set(FooTestArgs)
 
     include(GoogleTest)
     add_subdirectory(googletest)
@@ -31,6 +31,7 @@ if(UNIX)
             test/test_utils.h
             test/test_distance.cpp
             test/test_similarity.cpp
+            test/test_centrality.cpp
             ${AlgorithmFiles} )
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)

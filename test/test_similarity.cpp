@@ -28,7 +28,7 @@ TEST(test_common_neighbors, tree)
     std::vector<int> t{0,1,2};
     graph g(e,t);
     auto res = common_neighbors(g);
-    ASSERT_EQ(res, mat({{1, 0, 1},{0, 2, 0},{1, 0, 1}})) << "empty graph is indirect";
+    ASSERT_EQ(res, mat({{1, 0, 1},{0, 2, 0},{1, 0, 1}})) << "similarity is incorrect";
 }
 
 TEST(test_jaccard_metric, tree)

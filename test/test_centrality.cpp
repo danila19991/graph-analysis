@@ -16,7 +16,7 @@ std::vector<std::vector<int>> e{
 std::vector<int> t{0,1,2};
 graph g(e,t);
 auto res = degree_centrality(g);
-ASSERT_EQ(res, std::vector<double>{0.5, 1, 0.5}) << "incorrect centrality";
+ASSERT_EQ(res, std::vector<double>({0.5, 1, 0.5})) << "incorrect centrality";
 }
 
 TEST(test_closness_centrality, tree)
@@ -29,5 +29,31 @@ std::vector<std::vector<int>> e{
 std::vector<int> t{0,1,2};
 graph g(e,t);
 auto res = closness_centrality(g);
-ASSERT_EQ(res, std::vector<double>{2./3, 1, 2./3}) << "incorrect centrality";
+ASSERT_EQ(res, std::vector<double>({2./3, 1, 2./3})) << "incorrect centrality";
+}
+
+TEST(test_betweenness_centrality, tree)
+{
+    std::vector<std::vector<int>> e{
+            {1},
+            {0, 2},
+            {1}
+    };
+    std::vector<int> t{0,1,2};
+    graph g(e,t);
+    auto res = betweenness_centrality(g);
+    ASSERT_EQ(res, std::vector<double>({0, 1, 0})) << "incorrect centrality";
+}
+
+TEST(test_edge_betweenness, tree)
+{
+    std::vector<std::vector<int>> e{
+            {1},
+            {0, 2},
+            {1}
+    };
+    std::vector<int> t{0,1,2};
+    graph g(e,t);
+    auto res = edge_betweenness(g);
+    ASSERT_EQ(res, std::vector<std::vector<double>>({{0, 2./3, 0},{2./3, 0, 2./3},{0, 2./3, 0}})) << "incorrect centrality";
 }

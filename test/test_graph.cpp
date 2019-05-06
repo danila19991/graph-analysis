@@ -161,7 +161,7 @@ std::vector<std::vector<int>> e{
 std::vector<int> t{0,1,2};
 std::vector<int> k{0,2};
 graph g(e,t);
-auto res = edge_betweenness(g);
+auto res = g.decrease(k);
 graph need({}, k);
 ASSERT_EQ(res, need) << "incorrect centrality";
 }

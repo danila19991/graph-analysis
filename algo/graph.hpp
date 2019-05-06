@@ -43,6 +43,8 @@ public:
 
     graph revert() const;
 
+    graph decrease(const std::vector<int>& allowed) const;
+
     static graph input_graph(const std::string& name);
 
     friend bool operator == (const graph&l, const graph& r);

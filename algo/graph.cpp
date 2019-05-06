@@ -166,4 +166,30 @@ std::vector<std::vector<int>> graph::get_edge_mat() const {
     return res;
 }
 
+graph graph::decrease(const std::vector<int>& allowed) const
+{
+    std::unordered_map<int, int> nti;
+
+    for(size_t i=0; i<allowed.size(); ++i){
+        nti[allowed[i]] = i;
+    }
+
+    graph res({}, allowed, nti);
+    res.edges.resize(allowed.size());
+
+    for(size_t i=0; i< edges.size(); ++i){
+        if(res.from_name_to_id.count(get_name(i))){
+            for(size_t j=0; j<edges[i].size(); ++j)
+            {
+                if(res.from_name_to_id.count(get_name(edges[i][j])))
+                {
+                    res.edges[res.get_id(get_name(i))].emplace_back(res.get_id(get_name(edges[i][j])));
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
 

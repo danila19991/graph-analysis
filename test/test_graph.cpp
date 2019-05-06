@@ -153,15 +153,22 @@ TEST(test_revert, indirect_graph)
 
 TEST(test_decrease, tree)
 {
-std::vector<std::vector<int>> e{
-    {1},
-    {0, 2},
-    {1}
-};
-std::vector<int> t{0,1,2};
-std::vector<int> k{0,2};
-graph g(e,t);
-auto res = g.decrease(k);
-graph need({}, k);
-ASSERT_EQ(res, need) << "incorrect centrality";
+    std::vector<std::vector<int>> e{
+        {1},
+        {0, 2},
+        {1}
+    };
+    std::vector<int> t{0,1,2};
+    std::vector<int> k{0,2};
+    graph g(e,t);
+    auto res = g.decrease(k);
+    graph need({{}, {}}, k);
+
+    ASSERT_EQ(res.get_name(0), need.get_name(0)) << "incorrect name";
+    ASSERT_EQ(res.get_name(1), need.get_name(1)) << "incorrect name";
+
+    ASSERT_EQ(res.get_id(0), need.get_id(0)) << "incorrect id";
+    ASSERT_EQ(res.get_id(2), need.get_id(2)) << "incorrect id";
+
+    ASSERT_EQ(res.edges, need.edges) << "incorrect edges";
 }

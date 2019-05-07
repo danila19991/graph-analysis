@@ -20,9 +20,9 @@ void output_graph(const std::string& file_name,
     }
 
     out<<vertexes.size()<<'\n';
-    for(auto& t:vertexes){
-        out<<t.size();
-        for(auto& e:t){
+    for(size_t i=0;i<vertexes.size(); ++i){
+        out<<g.get_name(i)<<' '<<vertexes[i].size();
+        for(auto& e:vertexes[i]){
             out<<' '<<g.get_name(e);
         }
         out<<'\n';
@@ -136,7 +136,7 @@ void third_task(const graph& g, bool with_show = false){
     auto m1 = common_neighbors(g);
 
     if(with_show) {
-        show_matrix(m1);
+        show_matrix(m1, "common_neighbors");
     }
 
     write_csv("../data/common_neighbors.csv", m1, g);
@@ -144,7 +144,7 @@ void third_task(const graph& g, bool with_show = false){
     auto m2 = jaccard_metric(g);
 
     if(with_show) {
-        show_matrix(m2);
+        show_matrix(m2, "jaccard_metric");
     }
 
     write_csv("../data/jaccard_metric.csv", m2, g);
@@ -152,7 +152,7 @@ void third_task(const graph& g, bool with_show = false){
     auto m3 = adamic_adar_metric(g);
 
     if(with_show) {
-        show_matrix(m3);
+        show_matrix(m3, "adamic_adar_metric");
     }
 
     write_csv("../data/adamic_adar_metric.csv", m3, g);
@@ -160,7 +160,7 @@ void third_task(const graph& g, bool with_show = false){
     auto m4 = preferential_attachment(g);
 
     if(with_show) {
-        show_matrix(m4);
+        show_matrix(m4, "preferential_attachment");
     }
 
     write_csv("../data/preferential_attachment.csv", m4, g);
@@ -273,6 +273,7 @@ void fourth_task(const graph& g){
 
 void zero_task(const graph& g){
     write_csv("../data/matrix.csv",g.get_edge_mat(), g);
+    write_csv("../data/connectivity_list.csv", g.edges, g);
 
     std::ofstream out("../data/list.csv");
 
@@ -293,18 +294,31 @@ void zero_task(const graph& g){
     out.flush();
 }
 
+graph make_interesting(const graph& g){
+    auto c = get_cc(g);
+
+    std::vector<int> tmp;
+
+    for(auto &it: c[0]){
+        tmp.emplace_back(g.get_name(it));
+    }
+
+    return g.decrease(tmp);
+}
+
 int main(int argc, char* argv[]){
-    auto g = graph::input_graph("../data/edges2.txt");
+    auto g = graph::input_graph("../data/edges.txt");
 
-    //zero_task(g);
-    //first_task(g);
+    show(g);
+    zero_task(g);
+    first_task(g);
 
-    g = g.make_indirected();
+    auto k = make_interesting(g);
+    output_graph("../data/edges2.txt", k.edges, k);
 
-    write_csv("../data/connectivity_list.csv", g.edges, g);
+    k = k.make_indirected();
 
-    //second_task(g, "../data/res2.txt");
-    //third_task(g, true);
-    //show(g);
-    //fourth_task(g);
+    second_task(k, "../data/res2.txt");
+    third_task(k, true);
+    fourth_task(k);
 }

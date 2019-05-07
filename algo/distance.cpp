@@ -96,7 +96,5 @@ double get_average_distance(const dist_mat& d){
         }
     }
 
-    std::cout<<s<<' '<<k<<'\n';
-
     return s/k;
 }

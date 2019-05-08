@@ -67,4 +67,15 @@ std::vector<int> intersection(const std::vector<int>& l,
  */
 std::vector<int> merge(const std::vector<int>& l, const std::vector<int>& r);
 
+std::vector<double> degree_centrality(const graph& g);
+
+std::vector<double> closness_centrality(const graph& g);
+
+std::vector<double> betweenness_centrality(const graph& g);
+
+std::vector<double> eigenvector_centrality(const graph& g, int iter_num = 1000,
+        double eps = 1e-6);
+
+std::vector<std::vector<double>> edge_betweenness(const graph& g);
+
 #endif //GRAPH_ALGORITHMS_HPP

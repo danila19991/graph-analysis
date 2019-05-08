@@ -141,4 +141,55 @@ void graph::normalise() {
     }
 }
 
+std::vector<std::pair<int, int>> graph::get_edge_list() const {
+    std::vector<std::pair<int, int>> res;
+
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j=0;j<edges[i].size();++j){
+            res.emplace_back(std::make_pair(i,edges[i][j]));
+        }
+    }
+
+    return res;
+}
+
+std::vector<std::vector<int>> graph::get_edge_mat() const {
+    std::vector<std::vector<int>> res(edges.size(),
+            std::vector<int>(edges.size(), 0));
+
+    for(size_t i=0;i<edges.size();++i){
+        for(size_t j=0;j<edges[i].size();++j){
+            res[i][edges[i][j]] = 1;
+        }
+    }
+
+    return res;
+}
+
+graph graph::decrease(const std::vector<int>& allowed) const
+{
+    std::unordered_map<int, int> nti;
+
+    for(size_t i=0; i<allowed.size(); ++i){
+        nti[allowed[i]] = i;
+    }
+
+    graph res({}, allowed, nti);
+    res.edges.resize(allowed.size());
+
+    for(size_t i=0; i< edges.size(); ++i){
+        if(res.from_name_to_id.count(get_name(i))){
+            for(size_t j=0; j<edges[i].size(); ++j)
+            {
+                if(res.from_name_to_id.count(get_name(edges[i][j])))
+                {
+                    res.edges[res.get_id(get_name(i))].emplace_back(res.get_id(get_name(edges[i][j])));
+                }
+            }
+        }
+    }
+
+    return res;
+}
+
 

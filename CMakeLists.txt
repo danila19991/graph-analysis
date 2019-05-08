@@ -13,10 +13,13 @@ set(AlgorithmFiles
         algo/graph.cpp
         algo/graph.hpp
         algo/distance.cpp
-        algo/similarity.cpp)
+        algo/similarity.cpp
+        algo/centrality.cpp)
+
+set(GrafficFiles graffic/graffic.cpp graffic/graffic.h)
 
 if(UNIX)
-    set(FooTestArgs )
+    set(FooTestArgs)
 
     include(GoogleTest)
     add_subdirectory(googletest)
@@ -28,11 +31,21 @@ if(UNIX)
             test/test_utils.h
             test/test_distance.cpp
             test/test_similarity.cpp
+            test/test_centrality.cpp
             ${AlgorithmFiles} )
 
     gtest_add_tests(${PROJECT_NAME}_test "${FooTestArgs}" AUTO)
     target_link_libraries(${PROJECT_NAME}_test gtest gtest_main)
 endif()
 
+add_subdirectory(glfw)
 
-add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles})
+set(OpenGL_GL_PREFERENCE GLVND)
+
+find_package(OpenGL REQUIRED)
+
+add_executable(${PROJECT_NAME} main.cpp ${AlgorithmFiles} ${GrafficFiles})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${glfw_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS})
+
+target_link_libraries(${PROJECT_NAME} glfw ${OPENGL_LIBRARIES})
